@@ -32,23 +32,18 @@ const DriftGame = () => {
 
       const drawGenericCar = (p: p5, color: number[], _scale: number, decal: string | null) => {
         p.rectMode(p.CENTER);
-        // Shadow
         p.fill(0, 50);
         p.noStroke();
-        p.rect(2, 2, 40, 20, 5);
-        // Body
+        p.rect(2, 2, 28, 14, 3);
         p.fill(color[0], color[1], color[2]);
         p.stroke(0);
         p.strokeWeight(1);
-        p.rect(0, 0, 40, 20, 4);
-        // Windshield
+        p.rect(0, 0, 28, 14, 3);
         p.fill(50);
-        p.rect(12, 0, 8, 16);
-        // Headlights
+        p.rect(8, 0, 6, 10);
         p.fill(255, 255, 0);
-        p.rect(18, -7, 3, 5);
-        p.rect(18, 7, 3, 5);
-        // Decal
+        p.rect(12, -5, 2, 3);
+        p.rect(12, 5, 2, 3);
         if (decal) drawDecal(p, decal);
       };
 
