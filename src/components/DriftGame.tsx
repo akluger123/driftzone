@@ -51,37 +51,30 @@ const DriftGame = () => {
         p.rectMode(p.CENTER);
         p.fill(0, 40);
         p.noStroke();
-        p.rect(2, 2, 46, 18, 2);
-        // Low sleek body
+        p.rect(2, 2, 30, 12, 2);
         p.fill(255, 165, 0);
         p.stroke(0);
         p.strokeWeight(1);
-        // Main body - angular
         p.beginShape();
-        p.vertex(-23, -9);
-        p.vertex(23, -7);
-        p.vertex(23, 7);
-        p.vertex(-23, 9);
+        p.vertex(-15, -6);
+        p.vertex(15, -5);
+        p.vertex(15, 5);
+        p.vertex(-15, 6);
         p.endShape(p.CLOSE);
-        // Front wedge
         p.fill(255, 140, 0);
-        p.triangle(23, -7, 28, -4, 23, 7);
-        // Rear
+        p.triangle(15, -5, 18, -3, 15, 5);
         p.fill(200, 120, 0);
-        p.rect(-20, 0, 6, 18, 1);
-        // Windshield
+        p.rect(-13, 0, 4, 12, 1);
         p.fill(30, 30, 50);
-        p.quad(8, -7, 16, -6, 16, 6, 8, 7);
-        // Headlights
+        p.quad(5, -5, 10, -4, 10, 4, 5, 5);
         p.fill(255, 255, 100);
-        p.rect(24, -5, 3, 3);
-        p.rect(24, 5, 3, 3);
-        // Wheels
+        p.rect(16, -3, 2, 2);
+        p.rect(16, 3, 2, 2);
         p.fill(30);
-        p.rect(-14, -10, 8, 4);
-        p.rect(-14, 10, 8, 4);
-        p.rect(10, -10, 8, 4);
-        p.rect(10, 10, 8, 4);
+        p.rect(-9, -7, 6, 3);
+        p.rect(-9, 7, 6, 3);
+        p.rect(7, -7, 6, 3);
+        p.rect(7, 7, 6, 3);
         if (decal) drawDecal(p, decal);
       };
 
