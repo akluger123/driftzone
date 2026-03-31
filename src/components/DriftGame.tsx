@@ -962,7 +962,10 @@ const DriftGame = () => {
         p.fill(150);
         p.textAlign(p.RIGHT, p.TOP);
         p.textSize(12);
-        p.text("P = Pause | Arrows = Drive", CW - 20, 20);
+        p.text("P = Pause | ESC = Menu | Arrows = Drive", CW - 20, 20);
+
+        // Back button in HUD
+        btn(CW - 80, CH - 50, 70, 35, "BACK", () => { gameState = GAME_STATE.MENU; });
       };
 
       // ========== OVERLAYS ==========
