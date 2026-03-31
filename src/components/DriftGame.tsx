@@ -239,7 +239,7 @@ const DriftGame = () => {
         "Lambo Huracan": {
           color: [255, 165, 0],
           speed: 0.18,
-          drift: 0.90,
+          drift: 0.82,
           drawFn: drawLambo,
         },
         "Nissan GT-R": {
