@@ -245,7 +245,7 @@ const DriftGame = () => {
         "Nissan GT-R": {
           color: [180, 180, 190],
           speed: 0.15,
-          drift: 0.88,
+          drift: 0.80,
           drawFn: drawGTR,
         },
         "Ford Mustang": {
