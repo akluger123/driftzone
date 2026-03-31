@@ -49,32 +49,70 @@ const DriftGame = () => {
 
       const drawLambo = (p: p5, _scale: number, decal: string | null) => {
         p.rectMode(p.CENTER);
-        p.fill(0, 40);
+        // Shadow
+        p.fill(0, 50);
         p.noStroke();
-        p.rect(2, 2, 30, 12, 2);
+        p.rect(1, 1, 26, 12, 1);
+        // Main body - ultra-low wedge shape (Huracan silhouette)
         p.fill(255, 165, 0);
-        p.stroke(0);
+        p.stroke(20);
         p.strokeWeight(1);
         p.beginShape();
-        p.vertex(-15, -6);
-        p.vertex(15, -5);
-        p.vertex(15, 5);
-        p.vertex(-15, 6);
+        p.vertex(-13, -5);  // rear left
+        p.vertex(-8, -6);   // rear fender flare
+        p.vertex(8, -5);    // front fender
+        p.vertex(13, -3);   // nose tip left
+        p.vertex(13, 3);    // nose tip right
+        p.vertex(8, 5);     // front fender right
+        p.vertex(-8, 6);    // rear fender flare right
+        p.vertex(-13, 5);   // rear right
         p.endShape(p.CLOSE);
-        p.fill(255, 140, 0);
-        p.triangle(15, -5, 18, -3, 15, 5);
-        p.fill(200, 120, 0);
-        p.rect(-13, 0, 4, 12, 1);
-        p.fill(30, 30, 50);
-        p.quad(5, -5, 10, -4, 10, 4, 5, 5);
-        p.fill(255, 255, 100);
-        p.rect(16, -3, 2, 2);
-        p.rect(16, 3, 2, 2);
-        p.fill(30);
-        p.rect(-9, -7, 6, 3);
-        p.rect(-9, 7, 6, 3);
-        p.rect(7, -7, 6, 3);
-        p.rect(7, 7, 6, 3);
+        // Rear diffuser / engine cover
+        p.fill(220, 140, 0);
+        p.noStroke();
+        p.rect(-11, 0, 4, 10, 1);
+        // Hexagonal rear vents (Huracan signature)
+        p.fill(40);
+        p.rect(-12, -3, 2, 2);
+        p.rect(-12, 3, 2, 2);
+        // Windshield (flat, angular)
+        p.fill(25, 25, 45);
+        p.stroke(20);
+        p.strokeWeight(0.5);
+        p.quad(2, -4, 7, -4, 7, 4, 2, 4);
+        // Side intake scoops
+        p.fill(40);
+        p.noStroke();
+        p.rect(-2, -5, 4, 1);
+        p.rect(-2, 5, 4, 1);
+        // Headlights (angular, sharp - Huracan style)
+        p.fill(255, 255, 120);
+        p.beginShape();
+        p.vertex(10, -4);
+        p.vertex(13, -2);
+        p.vertex(12, -2);
+        p.vertex(9, -4);
+        p.endShape(p.CLOSE);
+        p.beginShape();
+        p.vertex(10, 4);
+        p.vertex(13, 2);
+        p.vertex(12, 2);
+        p.vertex(9, 4);
+        p.endShape(p.CLOSE);
+        // Y-shaped taillights (Huracan signature)
+        p.stroke(255, 0, 0);
+        p.strokeWeight(1);
+        p.line(-13, -4, -11, -3);
+        p.line(-13, -2, -11, -3);
+        p.line(-13, 4, -11, 3);
+        p.line(-13, 2, -11, 3);
+        p.noStroke();
+        // Wheels
+        p.fill(25);
+        p.rect(-7, -7, 5, 3, 1);
+        p.rect(-7, 7, 5, 3, 1);
+        p.rect(6, -7, 5, 3, 1);
+        p.rect(6, 7, 5, 3, 1);
         if (decal) drawDecal(p, decal);
       };
 
@@ -924,7 +962,10 @@ const DriftGame = () => {
         p.fill(150);
         p.textAlign(p.RIGHT, p.TOP);
         p.textSize(12);
-        p.text("P = Pause | Arrows = Drive", CW - 20, 20);
+        p.text("P = Pause | ESC = Menu | Arrows = Drive", CW - 20, 20);
+
+        // Back button in HUD
+        btn(CW - 80, CH - 50, 70, 35, "BACK", () => { gameState = GAME_STATE.MENU; });
       };
 
       // ========== OVERLAYS ==========
@@ -1109,6 +1150,13 @@ const DriftGame = () => {
         if (p.key === "p" || p.key === "P") {
           if (gameState === GAME_STATE.PLAYING) gameState = GAME_STATE.PAUSED;
           else if (gameState === GAME_STATE.PAUSED) gameState = GAME_STATE.PLAYING;
+        }
+        if (p.keyCode === 27) { // ESC
+          if (gameState === GAME_STATE.PLAYING || gameState === GAME_STATE.PAUSED) {
+            gameState = GAME_STATE.MENU;
+          } else if (gameState !== GAME_STATE.MENU) {
+            gameState = GAME_STATE.MENU;
+          }
         }
       };
 
