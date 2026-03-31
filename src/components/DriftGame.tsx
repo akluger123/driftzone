@@ -1079,7 +1079,7 @@ const DriftGame = () => {
           this.driftFactor = carData.drift;
           this.friction = 0.98;
           this.power = carData.speed;
-          this.maxSpeed = 8 + carData.speed * 10;
+          this.maxSpeed = 5 + carData.speed * 6;
           this.steerSpeed = 0.045;
           this.carKey = currentCar;
           this.tireMarks = [];
