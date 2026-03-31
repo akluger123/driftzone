@@ -1142,16 +1142,16 @@ const DriftGame = () => {
             this.vel.setMag(this.maxSpeed);
           }
 
-          // Tire marks when drifting
-          if (this.isDrifting() && speed > 1.5) {
-            // Two tire marks (rear wheels)
+          // Tire marks anytime the car is turning (steering input)
+          const isTurning = Math.abs(this.angularVel) > 0.005 && speed > 0.8;
+          if (isTurning) {
             const rearOffset = p5.Vector.fromAngle(this.angle).mult(-8);
             const sideOffset = p5.Vector.fromAngle(this.angle + p.HALF_PI).mult(5);
             this.tireMarks.push(
-              { x: this.pos.x + rearOffset.x + sideOffset.x, y: this.pos.y + rearOffset.y + sideOffset.y, a: 180 },
-              { x: this.pos.x + rearOffset.x - sideOffset.x, y: this.pos.y + rearOffset.y - sideOffset.y, a: 180 }
+              { x: this.pos.x + rearOffset.x + sideOffset.x, y: this.pos.y + rearOffset.y + sideOffset.y, a: 150 },
+              { x: this.pos.x + rearOffset.x - sideOffset.x, y: this.pos.y + rearOffset.y - sideOffset.y, a: 150 }
             );
-            if (this.tireMarks.length > 1000) this.tireMarks.splice(0, 2);
+            if (this.tireMarks.length > 1500) this.tireMarks.splice(0, 2);
           }
 
           this.pos.add(this.vel);
