@@ -1065,7 +1065,7 @@ const DriftGame = () => {
           this.pos = p.createVector(x, y);
           this.vel = p.createVector(0, 0);
           this.acc = p.createVector(0, 0);
-          this.angle = -p.HALF_PI;
+          this.angle = 0;
           this.driftFactor = carData.drift;
           this.friction = 0.985;
           this.turnSensitivity = 0.07;
@@ -1075,14 +1075,13 @@ const DriftGame = () => {
         }
 
         update(worldW: number, worldH: number) {
-          if (p.keyIsDown(p.UP_ARROW) || p.keyIsDown(87)) {
+          if (p.keyIsDown(p.UP_ARROW)) {
             const ef = p5.Vector.fromAngle(this.angle);
             ef.mult(this.power);
             this.acc.add(ef);
           }
-          // No reverse - matches original V1 physics
-          if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(65)) this.angle -= this.turnSensitivity;
-          if (p.keyIsDown(p.RIGHT_ARROW) || p.keyIsDown(68)) this.angle += this.turnSensitivity;
+          if (p.keyIsDown(p.LEFT_ARROW)) this.angle -= this.turnSensitivity;
+          if (p.keyIsDown(p.RIGHT_ARROW)) this.angle += this.turnSensitivity;
 
           this.vel.add(this.acc);
 
@@ -1105,11 +1104,10 @@ const DriftGame = () => {
           this.pos.add(this.vel);
           this.acc.mult(0);
 
-          // Borders - bounce
-          if (this.pos.x < 20) { this.pos.x = 20; this.vel.x *= -0.5; }
-          if (this.pos.x > worldW - 20) { this.pos.x = worldW - 20; this.vel.x *= -0.5; }
-          if (this.pos.y < 20) { this.pos.y = 20; this.vel.y *= -0.5; }
-          if (this.pos.y > worldH - 20) { this.pos.y = worldH - 20; this.vel.y *= -0.5; }
+          if (this.pos.x > worldW) this.pos.x = 0;
+          if (this.pos.x < 0) this.pos.x = worldW;
+          if (this.pos.y > worldH) this.pos.y = 0;
+          if (this.pos.y < 0) this.pos.y = worldH;
         }
 
         isDrifting(): boolean {
