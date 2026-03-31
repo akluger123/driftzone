@@ -238,37 +238,37 @@ const DriftGame = () => {
       const CARS: Record<string, CarData> = {
         "Lambo Huracan": {
           color: [255, 165, 0],
-          speed: 0.35,
+          speed: 0.18,
           drift: 0.90,
           drawFn: drawLambo,
         },
         "Nissan GT-R": {
           color: [180, 180, 190],
-          speed: 0.30,
+          speed: 0.15,
           drift: 0.88,
           drawFn: drawGTR,
         },
         "Ford Mustang": {
           color: [0, 60, 180],
-          speed: 0.32,
+          speed: 0.16,
           drift: 0.93,
           drawFn: drawMustang,
         },
         "Red Pro": {
           color: [200, 30, 30],
-          speed: 0.25,
+          speed: 0.13,
           drift: 0.96,
           drawFn: (p, _s, d) => drawGenericCar(p, [200, 30, 30], 1, d),
         },
         "Blue Turbo": {
           color: [30, 100, 200],
-          speed: 0.30,
+          speed: 0.15,
           drift: 0.92,
           drawFn: (p, _s, d) => drawGenericCar(p, [30, 100, 200], 1, d),
         },
         "Yellow Speed": {
           color: [255, 200, 0],
-          speed: 0.35,
+          speed: 0.18,
           drift: 0.94,
           drawFn: (p, _s, d) => drawGenericCar(p, [255, 200, 0], 1, d),
         },
