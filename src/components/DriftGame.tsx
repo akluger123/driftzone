@@ -263,7 +263,7 @@ const DriftGame = () => {
         "Blue Turbo": {
           color: [30, 100, 200],
           speed: 0.15,
-          drift: 0.92,
+          drift: 0.84,
           drawFn: (p, _s, d) => drawGenericCar(p, [30, 100, 200], 1, d),
         },
         "Yellow Speed": {
