@@ -632,12 +632,12 @@ const DriftGame = () => {
         cones = [];
         coins = [];
 
-        // Generate cone clusters (drift zones)
-        for (let cluster = 0; cluster < 8; cluster++) {
-          const cx = p.random(200, level.width - 200);
-          const cy = p.random(200, level.height - 200);
-          const count = p.floor(p.random(6, 14));
-          const radius = p.random(60, 120);
+        // Generate cone clusters (fewer, spaced out)
+        for (let cluster = 0; cluster < 3; cluster++) {
+          const cx = p.random(300, level.width - 300);
+          const cy = p.random(300, level.height - 300);
+          const count = p.floor(p.random(3, 6));
+          const radius = p.random(80, 150);
 
           for (let i = 0; i < count; i++) {
             const angle = (p.TWO_PI / count) * i;
@@ -648,11 +648,11 @@ const DriftGame = () => {
           }
         }
 
-        // Scattered cones along paths
-        for (let i = 0; i < 30; i++) {
+        // A few scattered cones
+        for (let i = 0; i < 8; i++) {
           cones.push({
-            x: p.random(150, level.width - 150),
-            y: p.random(150, level.height - 150),
+            x: p.random(200, level.width - 200),
+            y: p.random(200, level.height - 200),
           });
         }
 
