@@ -1126,12 +1126,16 @@ const DriftGame = () => {
             this.throttle *= 0.92;
           }
 
-          // Steering - speed-sensitive, more responsive at speed
+          // Steering - more rotation, car spins into turns
           const steerInput = (p.keyIsDown(p.LEFT_ARROW) ? -1 : 0) + (p.keyIsDown(p.RIGHT_ARROW) ? 1 : 0);
-          const speedFactor = p.constrain(speed / 3, 0.3, 1.0);
-          const driftSteerBoost = this.handbrake ? 1.6 : 1.0;
+          const speedFactor = p.constrain(speed / 2.5, 0.3, 1.0);
+          const driftSteerBoost = this.handbrake ? 2.2 : 1.3;
           const targetAngVel = steerInput * this.steerSpeed * speedFactor * driftSteerBoost;
-          this.angularVel = p.lerp(this.angularVel, targetAngVel, 0.3);
+          this.angularVel = p.lerp(this.angularVel, targetAngVel, 0.25);
+          // Add extra angular momentum when sliding (rear-wheel spin feel)
+          if (speed > 1 && Math.abs(steerInput) > 0) {
+            this.angularVel += steerInput * 0.005 * speed;
+          }
           this.angle += this.angularVel;
 
           // Engine force
@@ -1141,18 +1145,16 @@ const DriftGame = () => {
 
           this.vel.add(this.acc);
 
-          // Drift physics - decompose velocity into forward and lateral
+          // Drift physics - rear wheels grip less than front
           const fDir = p5.Vector.fromAngle(this.angle);
           const lDir = p5.Vector.fromAngle(this.angle + p.HALF_PI);
           const fSpeed = this.vel.dot(fDir);
           const lSpeed = this.vel.dot(lDir);
 
-          // Lateral grip depends on handbrake and drift factor
-          // Lower grip = more slide = more drift
-          const gripLoss = this.handbrake ? 0.85 : this.driftFactor * 1.15;
-          // Slip model - donut-style: controlled slide, not too loose
+          // Rear-biased grip loss: back end slides out more
+          const baseGrip = this.handbrake ? 0.88 : this.driftFactor * 1.2;
           const slipAngle = Math.abs(Math.atan2(lSpeed, Math.abs(fSpeed) + 0.001));
-          const slipGrip = gripLoss + (1 - gripLoss) * Math.max(0, 1 - slipAngle * 1.7);
+          const slipGrip = baseGrip + (1 - baseGrip) * Math.max(0, 1 - slipAngle * 1.8);
 
           const nLat = lDir.copy().mult(lSpeed * slipGrip);
           const nFwd = fDir.copy().mult(fSpeed);
