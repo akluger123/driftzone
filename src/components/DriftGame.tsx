@@ -50,69 +50,95 @@ const DriftGame = () => {
       const drawLambo = (p: p5, _scale: number, decal: string | null) => {
         p.rectMode(p.CENTER);
         // Shadow
-        p.fill(0, 50);
+        p.fill(0, 60);
         p.noStroke();
-        p.rect(1, 1, 26, 12, 1);
-        // Main body - ultra-low wedge shape (Huracan silhouette)
+        p.ellipse(1, 1, 32, 18);
+        // Main body - wide aggressive Huracan shape
         p.fill(255, 165, 0);
         p.stroke(20);
         p.strokeWeight(1);
         p.beginShape();
-        p.vertex(-13, -5);  // rear left
-        p.vertex(-8, -6);   // rear fender flare
-        p.vertex(8, -5);    // front fender
-        p.vertex(13, -3);   // nose tip left
-        p.vertex(13, 3);    // nose tip right
-        p.vertex(8, 5);     // front fender right
-        p.vertex(-8, 6);    // rear fender flare right
-        p.vertex(-13, 5);   // rear right
+        p.vertex(-15, -7);   // rear left corner
+        p.vertex(-10, -8);   // rear fender flare left
+        p.vertex(-4, -8);    // mid body left
+        p.vertex(8, -7);     // front fender left
+        p.vertex(14, -4);    // nose left
+        p.vertex(16, -1);    // nose tip left
+        p.vertex(16, 1);     // nose tip right
+        p.vertex(14, 4);     // nose right
+        p.vertex(8, 7);      // front fender right
+        p.vertex(-4, 8);     // mid body right
+        p.vertex(-10, 8);    // rear fender flare right
+        p.vertex(-15, 7);    // rear right corner
         p.endShape(p.CLOSE);
-        // Rear diffuser / engine cover
+        // Engine cover / rear panel
         p.fill(220, 140, 0);
         p.noStroke();
-        p.rect(-11, 0, 4, 10, 1);
-        // Hexagonal rear vents (Huracan signature)
-        p.fill(40);
-        p.rect(-12, -3, 2, 2);
-        p.rect(-12, 3, 2, 2);
-        // Windshield (flat, angular)
-        p.fill(25, 25, 45);
-        p.stroke(20);
-        p.strokeWeight(0.5);
-        p.quad(2, -4, 7, -4, 7, 4, 2, 4);
-        // Side intake scoops
-        p.fill(40);
-        p.noStroke();
-        p.rect(-2, -5, 4, 1);
-        p.rect(-2, 5, 4, 1);
-        // Headlights (angular, sharp - Huracan style)
-        p.fill(255, 255, 120);
         p.beginShape();
-        p.vertex(10, -4);
-        p.vertex(13, -2);
-        p.vertex(12, -2);
-        p.vertex(9, -4);
+        p.vertex(-15, -6);
+        p.vertex(-9, -7);
+        p.vertex(-9, 7);
+        p.vertex(-15, 6);
+        p.endShape(p.CLOSE);
+        // Engine vents (hexagonal)
+        p.fill(35);
+        p.rect(-13, -4, 3, 2.5, 0.5);
+        p.rect(-13, 0, 3, 2.5, 0.5);
+        p.rect(-13, 4, 3, 2.5, 0.5);
+        // Windshield (wide, angular)
+        p.fill(20, 20, 45);
+        p.stroke(15);
+        p.strokeWeight(0.5);
+        p.beginShape();
+        p.vertex(2, -6);
+        p.vertex(9, -5);
+        p.vertex(9, 5);
+        p.vertex(2, 6);
+        p.endShape(p.CLOSE);
+        // Side intake scoops (bigger)
+        p.fill(35);
+        p.noStroke();
+        p.rect(-3, -7.5, 6, 1.5, 0.5);
+        p.rect(-3, 7.5, 6, 1.5, 0.5);
+        // Side skirts
+        p.fill(200, 130, 0);
+        p.rect(2, -8, 8, 1);
+        p.rect(2, 8, 8, 1);
+        // Headlights (angular, sharp - Huracan Y-shape)
+        p.fill(255, 255, 140);
+        p.noStroke();
+        p.beginShape();
+        p.vertex(11, -6);
+        p.vertex(16, -3);
+        p.vertex(15, -2);
+        p.vertex(10, -5);
         p.endShape(p.CLOSE);
         p.beginShape();
-        p.vertex(10, 4);
-        p.vertex(13, 2);
-        p.vertex(12, 2);
-        p.vertex(9, 4);
+        p.vertex(11, 6);
+        p.vertex(16, 3);
+        p.vertex(15, 2);
+        p.vertex(10, 5);
         p.endShape(p.CLOSE);
         // Y-shaped taillights (Huracan signature)
         p.stroke(255, 0, 0);
-        p.strokeWeight(1);
-        p.line(-13, -4, -11, -3);
-        p.line(-13, -2, -11, -3);
-        p.line(-13, 4, -11, 3);
-        p.line(-13, 2, -11, 3);
+        p.strokeWeight(1.5);
+        p.line(-15, -6, -12, -4);
+        p.line(-15, -3, -12, -4);
+        p.line(-15, 6, -12, 4);
+        p.line(-15, 3, -12, 4);
         p.noStroke();
-        // Wheels
-        p.fill(25);
-        p.rect(-7, -7, 5, 3, 1);
-        p.rect(-7, 7, 5, 3, 1);
-        p.rect(6, -7, 5, 3, 1);
-        p.rect(6, 7, 5, 3, 1);
+        // Wheels (wider stance)
+        p.fill(20);
+        p.rect(-9, -9, 6, 3.5, 1);
+        p.rect(-9, 9, 6, 3.5, 1);
+        p.rect(7, -9, 6, 3.5, 1);
+        p.rect(7, 9, 6, 3.5, 1);
+        // Wheel rims
+        p.fill(80);
+        p.rect(-9, -9, 4, 2, 0.5);
+        p.rect(-9, 9, 4, 2, 0.5);
+        p.rect(7, -9, 4, 2, 0.5);
+        p.rect(7, 9, 4, 2, 0.5);
         if (decal) drawDecal(p, decal);
       };
 
@@ -1100,12 +1126,16 @@ const DriftGame = () => {
             this.throttle *= 0.92;
           }
 
-          // Steering - speed-sensitive, more responsive at speed
+          // Steering - more rotation, car spins into turns
           const steerInput = (p.keyIsDown(p.LEFT_ARROW) ? -1 : 0) + (p.keyIsDown(p.RIGHT_ARROW) ? 1 : 0);
-          const speedFactor = p.constrain(speed / 3, 0.3, 1.0);
-          const driftSteerBoost = this.handbrake ? 1.6 : 1.0;
+          const speedFactor = p.constrain(speed / 2.5, 0.3, 1.0);
+          const driftSteerBoost = this.handbrake ? 2.2 : 1.3;
           const targetAngVel = steerInput * this.steerSpeed * speedFactor * driftSteerBoost;
-          this.angularVel = p.lerp(this.angularVel, targetAngVel, 0.3);
+          this.angularVel = p.lerp(this.angularVel, targetAngVel, 0.25);
+          // Add extra angular momentum when sliding (rear-wheel spin feel)
+          if (speed > 1 && Math.abs(steerInput) > 0) {
+            this.angularVel += steerInput * 0.005 * speed;
+          }
           this.angle += this.angularVel;
 
           // Engine force
@@ -1115,18 +1145,16 @@ const DriftGame = () => {
 
           this.vel.add(this.acc);
 
-          // Drift physics - decompose velocity into forward and lateral
+          // Drift physics - rear wheels grip less than front
           const fDir = p5.Vector.fromAngle(this.angle);
           const lDir = p5.Vector.fromAngle(this.angle + p.HALF_PI);
           const fSpeed = this.vel.dot(fDir);
           const lSpeed = this.vel.dot(lDir);
 
-          // Lateral grip depends on handbrake and drift factor
-          // Lower grip = more slide = more drift
-          const gripLoss = this.handbrake ? 0.85 : this.driftFactor * 1.15;
-          // Slip model - donut-style: controlled slide, not too loose
+          // Rear-biased grip loss: back end slides out more
+          const baseGrip = this.handbrake ? 0.88 : this.driftFactor * 1.2;
           const slipAngle = Math.abs(Math.atan2(lSpeed, Math.abs(fSpeed) + 0.001));
-          const slipGrip = gripLoss + (1 - gripLoss) * Math.max(0, 1 - slipAngle * 1.7);
+          const slipGrip = baseGrip + (1 - baseGrip) * Math.max(0, 1 - slipAngle * 1.8);
 
           const nLat = lDir.copy().mult(lSpeed * slipGrip);
           const nFwd = fDir.copy().mult(fSpeed);
