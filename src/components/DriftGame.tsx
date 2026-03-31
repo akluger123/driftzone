@@ -371,7 +371,7 @@ const DriftGame = () => {
         p.textAlign(p.CENTER, p.CENTER);
         p.textSize(56);
         p.textStyle(p.BOLD);
-        p.text("DRIFT HUNTERS", CW / 2, CH / 2 - 140);
+        p.text("DRIFT GAME - AMI", CW / 2, CH / 2 - 140);
 
         p.textSize(20);
         p.fill(0, 200, 0);
@@ -962,7 +962,7 @@ const DriftGame = () => {
         p.fill(150);
         p.textAlign(p.RIGHT, p.TOP);
         p.textSize(12);
-        p.text("P = Pause | ESC = Menu | Arrows = Drive", CW - 20, 20);
+        p.text("P = Pause | ESC = Menu | Space = Handbrake", CW - 20, 20);
 
         // Back button in HUD
         btn(CW - 80, CH - 50, 70, 35, "BACK", () => { gameState = GAME_STATE.MENU; });
@@ -1054,67 +1054,118 @@ const DriftGame = () => {
         vel: p5.Vector;
         acc: p5.Vector;
         angle: number;
+        angularVel: number;
         driftFactor: number;
         friction: number;
-        turnSensitivity: number;
         power: number;
+        maxSpeed: number;
+        steerSpeed: number;
         carKey: string;
         tireMarks: { x: number; y: number; a: number }[];
+        handbrake: boolean;
+        throttle: number;
 
         constructor(x: number, y: number, carData: CarData) {
           this.pos = p.createVector(x, y);
           this.vel = p.createVector(0, 0);
           this.acc = p.createVector(0, 0);
           this.angle = 0;
+          this.angularVel = 0;
           this.driftFactor = carData.drift;
-          this.friction = 0.985;
-          this.turnSensitivity = 0.07;
+          this.friction = 0.98;
           this.power = carData.speed;
+          this.maxSpeed = 8 + carData.speed * 10;
+          this.steerSpeed = 0.045;
           this.carKey = currentCar;
           this.tireMarks = [];
+          this.handbrake = false;
+          this.throttle = 0;
         }
 
         update(worldW: number, worldH: number) {
+          const speed = this.vel.mag();
+          this.handbrake = p.keyIsDown(32); // spacebar
+
+          // Throttle
           if (p.keyIsDown(p.UP_ARROW)) {
-            const ef = p5.Vector.fromAngle(this.angle);
-            ef.mult(this.power);
-            this.acc.add(ef);
+            this.throttle = p.min(this.throttle + 0.08, 1);
+          } else if (p.keyIsDown(p.DOWN_ARROW)) {
+            this.throttle = p.max(this.throttle - 0.06, -0.4);
+          } else {
+            this.throttle *= 0.92;
           }
-          if (p.keyIsDown(p.LEFT_ARROW)) this.angle -= this.turnSensitivity;
-          if (p.keyIsDown(p.RIGHT_ARROW)) this.angle += this.turnSensitivity;
+
+          // Steering - speed-sensitive, more responsive at speed
+          const steerInput = (p.keyIsDown(p.LEFT_ARROW) ? -1 : 0) + (p.keyIsDown(p.RIGHT_ARROW) ? 1 : 0);
+          const speedFactor = p.constrain(speed / 3, 0.3, 1.0);
+          const driftSteerBoost = this.handbrake ? 1.6 : 1.0;
+          const targetAngVel = steerInput * this.steerSpeed * speedFactor * driftSteerBoost;
+          this.angularVel = p.lerp(this.angularVel, targetAngVel, 0.3);
+          this.angle += this.angularVel;
+
+          // Engine force
+          const ef = p5.Vector.fromAngle(this.angle);
+          ef.mult(this.throttle * this.power);
+          this.acc.add(ef);
 
           this.vel.add(this.acc);
 
+          // Drift physics - decompose velocity into forward and lateral
           const fDir = p5.Vector.fromAngle(this.angle);
           const lDir = p5.Vector.fromAngle(this.angle + p.HALF_PI);
           const fSpeed = this.vel.dot(fDir);
           const lSpeed = this.vel.dot(lDir);
 
-          const nLat = lDir.copy().mult(lSpeed * this.driftFactor);
+          // Lateral grip depends on handbrake and drift factor
+          // Lower grip = more slide = more drift
+          const gripLoss = this.handbrake ? 0.82 : this.driftFactor;
+          // Quadratic slip model inspired by Drift Hunters Pro:
+          // more slip angle = less grip recovery
+          const slipAngle = Math.abs(Math.atan2(lSpeed, Math.abs(fSpeed) + 0.001));
+          const slipGrip = gripLoss + (1 - gripLoss) * Math.max(0, 1 - slipAngle * 1.5);
+
+          const nLat = lDir.copy().mult(lSpeed * slipGrip);
           const nFwd = fDir.copy().mult(fSpeed);
           this.vel = nFwd.add(nLat);
-          this.vel.mult(this.friction);
+
+          // Rolling friction + drag
+          const dragFactor = this.handbrake ? 0.975 : this.friction;
+          this.vel.mult(dragFactor);
+
+          // Speed cap
+          if (this.vel.mag() > this.maxSpeed) {
+            this.vel.setMag(this.maxSpeed);
+          }
 
           // Tire marks when drifting
-          if (this.isDrifting() && this.vel.mag() > 1) {
-            this.tireMarks.push({ x: this.pos.x, y: this.pos.y, a: 200 });
-            if (this.tireMarks.length > 500) this.tireMarks.shift();
+          if (this.isDrifting() && speed > 1.5) {
+            // Two tire marks (rear wheels)
+            const rearOffset = p5.Vector.fromAngle(this.angle).mult(-8);
+            const sideOffset = p5.Vector.fromAngle(this.angle + p.HALF_PI).mult(5);
+            this.tireMarks.push(
+              { x: this.pos.x + rearOffset.x + sideOffset.x, y: this.pos.y + rearOffset.y + sideOffset.y, a: 180 },
+              { x: this.pos.x + rearOffset.x - sideOffset.x, y: this.pos.y + rearOffset.y - sideOffset.y, a: 180 }
+            );
+            if (this.tireMarks.length > 1000) this.tireMarks.splice(0, 2);
           }
 
           this.pos.add(this.vel);
           this.acc.mult(0);
 
-          if (this.pos.x > worldW) this.pos.x = 0;
-          if (this.pos.x < 0) this.pos.x = worldW;
-          if (this.pos.y > worldH) this.pos.y = 0;
-          if (this.pos.y < 0) this.pos.y = worldH;
+          // Borders - soft wall
+          const margin = 20;
+          const pushBack = 0.3;
+          if (this.pos.x < margin) { this.pos.x = margin; this.vel.x *= -pushBack; }
+          if (this.pos.x > worldW - margin) { this.pos.x = worldW - margin; this.vel.x *= -pushBack; }
+          if (this.pos.y < margin) { this.pos.y = margin; this.vel.y *= -pushBack; }
+          if (this.pos.y > worldH - margin) { this.pos.y = worldH - margin; this.vel.y *= -pushBack; }
         }
 
         isDrifting(): boolean {
-          if (this.vel.mag() < 1) return false;
+          if (this.vel.mag() < 1.5) return false;
           const fDir = p5.Vector.fromAngle(this.angle);
           const dot = Math.abs(p5.Vector.dot(this.vel.copy().normalize(), fDir));
-          return dot < 0.85;
+          return dot < 0.88;
         }
 
         display(decal: string | null) {
