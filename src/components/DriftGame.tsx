@@ -238,37 +238,37 @@ const DriftGame = () => {
       const CARS: Record<string, CarData> = {
         "Lambo Huracan": {
           color: [255, 165, 0],
-          speed: 0.35,
+          speed: 0.18,
           drift: 0.90,
           drawFn: drawLambo,
         },
         "Nissan GT-R": {
           color: [180, 180, 190],
-          speed: 0.30,
+          speed: 0.15,
           drift: 0.88,
           drawFn: drawGTR,
         },
         "Ford Mustang": {
           color: [0, 60, 180],
-          speed: 0.32,
+          speed: 0.16,
           drift: 0.93,
           drawFn: drawMustang,
         },
         "Red Pro": {
           color: [200, 30, 30],
-          speed: 0.25,
+          speed: 0.13,
           drift: 0.96,
           drawFn: (p, _s, d) => drawGenericCar(p, [200, 30, 30], 1, d),
         },
         "Blue Turbo": {
           color: [30, 100, 200],
-          speed: 0.30,
+          speed: 0.15,
           drift: 0.92,
           drawFn: (p, _s, d) => drawGenericCar(p, [30, 100, 200], 1, d),
         },
         "Yellow Speed": {
           color: [255, 200, 0],
-          speed: 0.35,
+          speed: 0.18,
           drift: 0.94,
           drawFn: (p, _s, d) => drawGenericCar(p, [255, 200, 0], 1, d),
         },
@@ -632,12 +632,12 @@ const DriftGame = () => {
         cones = [];
         coins = [];
 
-        // Generate cone clusters (drift zones)
-        for (let cluster = 0; cluster < 8; cluster++) {
-          const cx = p.random(200, level.width - 200);
-          const cy = p.random(200, level.height - 200);
-          const count = p.floor(p.random(6, 14));
-          const radius = p.random(60, 120);
+        // Generate cone clusters (fewer, spaced out)
+        for (let cluster = 0; cluster < 3; cluster++) {
+          const cx = p.random(300, level.width - 300);
+          const cy = p.random(300, level.height - 300);
+          const count = p.floor(p.random(3, 6));
+          const radius = p.random(80, 150);
 
           for (let i = 0; i < count; i++) {
             const angle = (p.TWO_PI / count) * i;
@@ -648,11 +648,11 @@ const DriftGame = () => {
           }
         }
 
-        // Scattered cones along paths
-        for (let i = 0; i < 30; i++) {
+        // A few scattered cones
+        for (let i = 0; i < 8; i++) {
           cones.push({
-            x: p.random(150, level.width - 150),
-            y: p.random(150, level.height - 150),
+            x: p.random(200, level.width - 200),
+            y: p.random(200, level.height - 200),
           });
         }
 
@@ -786,9 +786,12 @@ const DriftGame = () => {
           p.rect(obs.x, obs.y, obs.w, obs.h, 3);
         });
 
-        // Cones
+        // Cones + collision check (cones kill the player)
         cones.forEach((cone) => {
           drawCone(cone.x, cone.y);
+          if (p.dist(car.pos.x, car.pos.y, cone.x, cone.y) < 22) {
+            crashDetected = true;
+          }
         });
 
         // Coins
@@ -839,15 +842,16 @@ const DriftGame = () => {
 
       const drawCone = (x: number, y: number) => {
         p.noStroke();
-        // Base
-        p.fill(255, 100, 0);
-        p.triangle(x - 8, y + 8, x + 8, y + 8, x, y - 10);
-        // Stripe
-        p.fill(255, 255, 255);
-        p.quad(x - 4, y + 2, x + 4, y + 2, x + 2, y - 3, x - 2, y - 3);
         // Base plate
         p.fill(200, 80, 0);
-        p.rect(x - 10, y + 7, 20, 4, 1);
+        p.rect(x - 16, y + 12, 32, 6, 2);
+        // Main cone body
+        p.fill(255, 100, 0);
+        p.triangle(x - 14, y + 14, x + 14, y + 14, x, y - 16);
+        // White stripes
+        p.fill(255, 255, 255);
+        p.quad(x - 7, y + 4, x + 7, y + 4, x + 4, y - 3, x - 4, y - 3);
+        p.quad(x - 3, y - 6, x + 3, y - 6, x + 1, y - 11, x - 1, y - 11);
       };
 
       const drawCoin = (coin: any) => {
@@ -1138,16 +1142,16 @@ const DriftGame = () => {
             this.vel.setMag(this.maxSpeed);
           }
 
-          // Tire marks when drifting
-          if (this.isDrifting() && speed > 1.5) {
-            // Two tire marks (rear wheels)
+          // Tire marks anytime the car is turning (steering input)
+          const isTurning = Math.abs(this.angularVel) > 0.005 && speed > 0.8;
+          if (isTurning) {
             const rearOffset = p5.Vector.fromAngle(this.angle).mult(-8);
             const sideOffset = p5.Vector.fromAngle(this.angle + p.HALF_PI).mult(5);
             this.tireMarks.push(
-              { x: this.pos.x + rearOffset.x + sideOffset.x, y: this.pos.y + rearOffset.y + sideOffset.y, a: 180 },
-              { x: this.pos.x + rearOffset.x - sideOffset.x, y: this.pos.y + rearOffset.y - sideOffset.y, a: 180 }
+              { x: this.pos.x + rearOffset.x + sideOffset.x, y: this.pos.y + rearOffset.y + sideOffset.y, a: 150 },
+              { x: this.pos.x + rearOffset.x - sideOffset.x, y: this.pos.y + rearOffset.y - sideOffset.y, a: 150 }
             );
-            if (this.tireMarks.length > 1000) this.tireMarks.splice(0, 2);
+            if (this.tireMarks.length > 1500) this.tireMarks.splice(0, 2);
           }
 
           this.pos.add(this.vel);
