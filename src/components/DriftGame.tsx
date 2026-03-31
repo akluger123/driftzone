@@ -1079,7 +1079,7 @@ const DriftGame = () => {
           this.driftFactor = carData.drift;
           this.friction = 0.98;
           this.power = carData.speed;
-          this.maxSpeed = 8 + carData.speed * 10;
+          this.maxSpeed = 5 + carData.speed * 6;
           this.steerSpeed = 0.045;
           this.carKey = currentCar;
           this.tireMarks = [];
@@ -1123,11 +1123,10 @@ const DriftGame = () => {
 
           // Lateral grip depends on handbrake and drift factor
           // Lower grip = more slide = more drift
-          const gripLoss = this.handbrake ? 0.88 : this.driftFactor * 1.3;
-          // Quadratic slip model inspired by Drift Hunters Pro:
-          // more slip angle = less grip recovery → more sideways slide
+          const gripLoss = this.handbrake ? 0.85 : this.driftFactor * 1.15;
+          // Slip model - donut-style: controlled slide, not too loose
           const slipAngle = Math.abs(Math.atan2(lSpeed, Math.abs(fSpeed) + 0.001));
-          const slipGrip = gripLoss + (1 - gripLoss) * Math.max(0, 1 - slipAngle * 2.0);
+          const slipGrip = gripLoss + (1 - gripLoss) * Math.max(0, 1 - slipAngle * 1.7);
 
           const nLat = lDir.copy().mult(lSpeed * slipGrip);
           const nFwd = fDir.copy().mult(fSpeed);
