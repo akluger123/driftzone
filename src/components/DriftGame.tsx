@@ -786,9 +786,12 @@ const DriftGame = () => {
           p.rect(obs.x, obs.y, obs.w, obs.h, 3);
         });
 
-        // Cones
+        // Cones + collision check (cones kill the player)
         cones.forEach((cone) => {
           drawCone(cone.x, cone.y);
+          if (p.dist(car.pos.x, car.pos.y, cone.x, cone.y) < 22) {
+            crashDetected = true;
+          }
         });
 
         // Coins
