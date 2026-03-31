@@ -32,23 +32,18 @@ const DriftGame = () => {
 
       const drawGenericCar = (p: p5, color: number[], _scale: number, decal: string | null) => {
         p.rectMode(p.CENTER);
-        // Shadow
         p.fill(0, 50);
         p.noStroke();
-        p.rect(2, 2, 40, 20, 5);
-        // Body
+        p.rect(2, 2, 28, 14, 3);
         p.fill(color[0], color[1], color[2]);
         p.stroke(0);
         p.strokeWeight(1);
-        p.rect(0, 0, 40, 20, 4);
-        // Windshield
+        p.rect(0, 0, 28, 14, 3);
         p.fill(50);
-        p.rect(12, 0, 8, 16);
-        // Headlights
+        p.rect(8, 0, 6, 10);
         p.fill(255, 255, 0);
-        p.rect(18, -7, 3, 5);
-        p.rect(18, 7, 3, 5);
-        // Decal
+        p.rect(12, -5, 2, 3);
+        p.rect(12, 5, 2, 3);
         if (decal) drawDecal(p, decal);
       };
 
@@ -56,37 +51,30 @@ const DriftGame = () => {
         p.rectMode(p.CENTER);
         p.fill(0, 40);
         p.noStroke();
-        p.rect(2, 2, 46, 18, 2);
-        // Low sleek body
+        p.rect(2, 2, 30, 12, 2);
         p.fill(255, 165, 0);
         p.stroke(0);
         p.strokeWeight(1);
-        // Main body - angular
         p.beginShape();
-        p.vertex(-23, -9);
-        p.vertex(23, -7);
-        p.vertex(23, 7);
-        p.vertex(-23, 9);
+        p.vertex(-15, -6);
+        p.vertex(15, -5);
+        p.vertex(15, 5);
+        p.vertex(-15, 6);
         p.endShape(p.CLOSE);
-        // Front wedge
         p.fill(255, 140, 0);
-        p.triangle(23, -7, 28, -4, 23, 7);
-        // Rear
+        p.triangle(15, -5, 18, -3, 15, 5);
         p.fill(200, 120, 0);
-        p.rect(-20, 0, 6, 18, 1);
-        // Windshield
+        p.rect(-13, 0, 4, 12, 1);
         p.fill(30, 30, 50);
-        p.quad(8, -7, 16, -6, 16, 6, 8, 7);
-        // Headlights
+        p.quad(5, -5, 10, -4, 10, 4, 5, 5);
         p.fill(255, 255, 100);
-        p.rect(24, -5, 3, 3);
-        p.rect(24, 5, 3, 3);
-        // Wheels
+        p.rect(16, -3, 2, 2);
+        p.rect(16, 3, 2, 2);
         p.fill(30);
-        p.rect(-14, -10, 8, 4);
-        p.rect(-14, 10, 8, 4);
-        p.rect(10, -10, 8, 4);
-        p.rect(10, 10, 8, 4);
+        p.rect(-9, -7, 6, 3);
+        p.rect(-9, 7, 6, 3);
+        p.rect(7, -7, 6, 3);
+        p.rect(7, 7, 6, 3);
         if (decal) drawDecal(p, decal);
       };
 
@@ -94,37 +82,30 @@ const DriftGame = () => {
         p.rectMode(p.CENTER);
         p.fill(0, 40);
         p.noStroke();
-        p.rect(2, 2, 44, 20, 3);
-        // Muscular body
+        p.rect(2, 2, 30, 14, 2);
         p.fill(180, 180, 190);
         p.stroke(0);
         p.strokeWeight(1);
-        p.rect(0, 0, 44, 20, 3);
-        // Hood bulge
+        p.rect(0, 0, 30, 14, 2);
         p.fill(160, 160, 170);
-        p.rect(8, 0, 14, 12, 2);
-        // Windshield
+        p.rect(5, 0, 10, 8, 1);
         p.fill(20, 20, 40);
-        p.rect(2, 0, 8, 14, 1);
-        // Rear spoiler
+        p.rect(1, 0, 6, 10, 1);
         p.fill(60);
-        p.rect(-22, 0, 2, 22);
-        // Tail lights (iconic round)
+        p.rect(-15, 0, 2, 16);
         p.fill(255, 0, 0);
-        p.ellipse(-20, -7, 4, 4);
-        p.ellipse(-20, -4, 4, 4);
-        p.ellipse(-20, 7, 4, 4);
-        p.ellipse(-20, 4, 4, 4);
-        // Headlights
+        p.ellipse(-13, -5, 3, 3);
+        p.ellipse(-13, -2, 3, 3);
+        p.ellipse(-13, 5, 3, 3);
+        p.ellipse(-13, 2, 3, 3);
         p.fill(255, 255, 200);
-        p.rect(20, -6, 4, 5, 1);
-        p.rect(20, 6, 4, 5, 1);
-        // Wheels
+        p.rect(13, -4, 3, 4, 1);
+        p.rect(13, 4, 3, 4, 1);
         p.fill(30);
-        p.rect(-12, -11, 8, 4);
-        p.rect(-12, 11, 8, 4);
-        p.rect(10, -11, 8, 4);
-        p.rect(10, 11, 8, 4);
+        p.rect(-8, -8, 6, 3);
+        p.rect(-8, 8, 6, 3);
+        p.rect(7, -8, 6, 3);
+        p.rect(7, 8, 6, 3);
         if (decal) drawDecal(p, decal);
       };
 
@@ -132,42 +113,35 @@ const DriftGame = () => {
         p.rectMode(p.CENTER);
         p.fill(0, 40);
         p.noStroke();
-        p.rect(2, 2, 46, 20, 3);
-        // Classic muscle body
+        p.rect(2, 2, 32, 14, 2);
         p.fill(0, 60, 180);
         p.stroke(0);
         p.strokeWeight(1);
-        p.rect(0, 0, 46, 20, 3);
-        // Hood stripe
+        p.rect(0, 0, 32, 14, 2);
         p.fill(255, 255, 255);
         p.noStroke();
-        p.rect(10, -2, 20, 2);
-        p.rect(10, 2, 20, 2);
+        p.rect(7, -1, 14, 1);
+        p.rect(7, 1, 14, 1);
         p.stroke(0);
         p.strokeWeight(1);
-        // Windshield
         p.fill(30, 30, 50);
-        p.rect(2, 0, 10, 14, 1);
-        // Rear
+        p.rect(1, 0, 7, 10, 1);
         p.fill(0, 40, 140);
-        p.rect(-20, 0, 6, 18, 1);
-        // Tail lights (triple bar)
+        p.rect(-13, 0, 4, 12, 1);
         p.fill(255, 0, 0);
-        p.rect(-22, -7, 2, 3);
-        p.rect(-22, -4, 2, 3);
-        p.rect(-22, 7, 2, 3);
-        p.rect(-22, 4, 2, 3);
-        p.rect(-22, 0, 2, 3);
-        // Headlights
+        p.rect(-14, -5, 2, 2);
+        p.rect(-14, -3, 2, 2);
+        p.rect(-14, 5, 2, 2);
+        p.rect(-14, 3, 2, 2);
+        p.rect(-14, 0, 2, 2);
         p.fill(255, 255, 150);
-        p.rect(21, -7, 4, 4, 1);
-        p.rect(21, 7, 4, 4, 1);
-        // Wheels
+        p.rect(14, -5, 3, 3, 1);
+        p.rect(14, 5, 3, 3, 1);
         p.fill(30);
-        p.rect(-14, -11, 8, 4);
-        p.rect(-14, 11, 8, 4);
-        p.rect(10, -11, 8, 4);
-        p.rect(10, 11, 8, 4);
+        p.rect(-9, -8, 6, 3);
+        p.rect(-9, 8, 6, 3);
+        p.rect(7, -8, 6, 3);
+        p.rect(7, 8, 6, 3);
         if (decal) drawDecal(p, decal);
       };
 
@@ -1065,11 +1039,7 @@ const DriftGame = () => {
             ef.mult(this.power);
             this.acc.add(ef);
           }
-          if (p.keyIsDown(p.DOWN_ARROW) || p.keyIsDown(83)) {
-            const ef = p5.Vector.fromAngle(this.angle);
-            ef.mult(-this.power * 0.5);
-            this.acc.add(ef);
-          }
+          // No reverse - matches original V1 physics
           if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(65)) this.angle -= this.turnSensitivity;
           if (p.keyIsDown(p.RIGHT_ARROW) || p.keyIsDown(68)) this.angle += this.turnSensitivity;
 
