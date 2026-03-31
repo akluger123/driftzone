@@ -1123,11 +1123,11 @@ const DriftGame = () => {
 
           // Lateral grip depends on handbrake and drift factor
           // Lower grip = more slide = more drift
-          const gripLoss = this.handbrake ? 0.82 : this.driftFactor;
+          const gripLoss = this.handbrake ? 0.88 : this.driftFactor * 1.3;
           // Quadratic slip model inspired by Drift Hunters Pro:
-          // more slip angle = less grip recovery
+          // more slip angle = less grip recovery → more sideways slide
           const slipAngle = Math.abs(Math.atan2(lSpeed, Math.abs(fSpeed) + 0.001));
-          const slipGrip = gripLoss + (1 - gripLoss) * Math.max(0, 1 - slipAngle * 1.5);
+          const slipGrip = gripLoss + (1 - gripLoss) * Math.max(0, 1 - slipAngle * 2.0);
 
           const nLat = lDir.copy().mult(lSpeed * slipGrip);
           const nFwd = fDir.copy().mult(fSpeed);
