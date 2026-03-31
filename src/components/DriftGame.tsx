@@ -1151,6 +1151,13 @@ const DriftGame = () => {
           if (gameState === GAME_STATE.PLAYING) gameState = GAME_STATE.PAUSED;
           else if (gameState === GAME_STATE.PAUSED) gameState = GAME_STATE.PLAYING;
         }
+        if (p.keyCode === 27) { // ESC
+          if (gameState === GAME_STATE.PLAYING || gameState === GAME_STATE.PAUSED) {
+            gameState = GAME_STATE.MENU;
+          } else if (gameState !== GAME_STATE.MENU) {
+            gameState = GAME_STATE.MENU;
+          }
+        }
       };
 
       p.mouseWheel = (event: any) => {
