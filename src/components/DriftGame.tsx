@@ -414,7 +414,7 @@ const DriftGame = () => {
           const x = startX + col * (cardW + gap);
           const y = startY + row * (cardH + gap);
 
-          if (y < 80 || y > CH - 80) return;
+          if (y < 80 || y > CH - 120) return;
 
           const selected = name === currentCar;
           p.fill(selected ? 30 : 15);
@@ -442,13 +442,14 @@ const DriftGame = () => {
 
           if (p.mouseIsPressed && clickCooldown <= 0 &&
             p.mouseX > x && p.mouseX < x + cardW &&
-            p.mouseY > y && p.mouseY < y + cardH) {
+            p.mouseY > y && p.mouseY < y + cardH &&
+            p.mouseY < CH - 70) {
             currentCar = name;
             clickCooldown = 15;
           }
         });
 
-        btn(CW / 2 - 80, CH - 60, 160, 45, "BACK", () => { gameState = GAME_STATE.MENU; });
+        btn(CW / 2 - 80, CH - 65, 160, 45, "BACK", () => { gameState = GAME_STATE.MENU; });
       };
 
       // ========== DECAL SHOP ==========
