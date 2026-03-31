@@ -371,7 +371,7 @@ const DriftGame = () => {
         p.textAlign(p.CENTER, p.CENTER);
         p.textSize(56);
         p.textStyle(p.BOLD);
-        p.text("DRIFT HUNTERS", CW / 2, CH / 2 - 140);
+        p.text("DRIFT GAME - AMI", CW / 2, CH / 2 - 140);
 
         p.textSize(20);
         p.fill(0, 200, 0);
