@@ -1039,11 +1039,7 @@ const DriftGame = () => {
             ef.mult(this.power);
             this.acc.add(ef);
           }
-          if (p.keyIsDown(p.DOWN_ARROW) || p.keyIsDown(83)) {
-            const ef = p5.Vector.fromAngle(this.angle);
-            ef.mult(-this.power * 0.5);
-            this.acc.add(ef);
-          }
+          // No reverse - matches original V1 physics
           if (p.keyIsDown(p.LEFT_ARROW) || p.keyIsDown(65)) this.angle -= this.turnSensitivity;
           if (p.keyIsDown(p.RIGHT_ARROW) || p.keyIsDown(68)) this.angle += this.turnSensitivity;
 
